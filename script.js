@@ -1,0 +1,77 @@
+const input = document.getElementById("searchInput");
+const findBtn = document.getElementById("findBtn");
+const addBtn = document.getElementById("addBtn");
+
+const img = document.getElementById("pokemonImg");
+const audio = document.getElementById("pokemonAudio");
+const selects = document.querySelectorAll(".move");
+const team = document.getElementById("team");
+
+let current = null;
+
+findBtn.addEventListener("click", () => {
+  const value = input.value.toLowerCase();
+
+  if (value === "") return;
+
+  const saved = localStorage.getItem(value);
+
+  if (saved) {
+    loadPokemon(JSON.parse(saved));
+    return;
+  }
+
+  fetch("https://pokeapi.co/api/v2/pokemon/" + value)
+    .then(response => {
+      if (!response.ok) throw new Error();
+      return response.json();
+    })
+    .then(data => {
+      localStorage.setItem(value, JSON.stringify(data));
+      loadPokemon(data);
+    })
+    .catch(() => {
+      alert("Pokemon not found");
+    });
+});
+
+function loadPokemon(data) {
+  current = data;
+
+  img.src = data.sprites.front_default;
+  audio.src = data.cries.latest;
+  audio.load();
+
+  const moves = data.moves.map(m => m.move.name);
+
+  selects.forEach(select => {
+    select.innerHTML = "";
+    moves.forEach(move => {
+      const option = document.createElement("option");
+      option.textContent = move;
+      select.appendChild(option);
+    });
+  });
+}
+
+addBtn.addEventListener("click", () => {
+  if (!current) return;
+
+  const box = document.createElement("div");
+  box.className = "team-member";
+
+  const sprite = document.createElement("img");
+  sprite.src = current.sprites.front_default;
+
+  const list = document.createElement("ul");
+
+  selects.forEach(select => {
+    const li = document.createElement("li");
+    li.textContent = select.value;
+    list.appendChild(li);
+  });
+
+  box.appendChild(sprite);
+  box.appendChild(list);
+  team.appendChild(box);
+});
