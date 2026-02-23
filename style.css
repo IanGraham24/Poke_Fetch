@@ -1,0 +1,54 @@
+body {
+  background: #bfe3ec;
+  font-family: Arial, sans-serif;
+}
+
+.container {
+  width: 450px;
+  margin: 40px auto;
+  background: white;
+  border: 6px solid #e0a41a;
+  border-radius: 40px;
+  padding: 20px;
+  text-align: center;
+}
+
+.pokemon-display img {
+  width: 200px;
+  image-rendering: pixelated;
+}
+
+.moves {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin: 15px 0;
+}
+
+select {
+  width: 100%;
+}
+
+#team {
+  margin-top: 20px;
+  border-top: 1px solid #000;
+}
+
+.team-member {
+  display: flex;
+  gap: 10px;
+  border: 1px solid black;
+  padding: 8px;
+  margin-top: 10px;
+}
+
+.team-member img {
+  width: 80px;
+  image-rendering: pixelated;
+}
+
+ul {
+  margin: 0;
+  padding-left: 15px;
+  text-align: left;
+}
