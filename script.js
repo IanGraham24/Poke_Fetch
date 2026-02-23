@@ -1,3 +1,6 @@
+/* Used AI as a small help reference for fetch and JavaScript formatting. */
+
+
 const input = document.getElementById("searchInput");
 const findBtn = document.getElementById("findBtn");
 const addBtn = document.getElementById("addBtn");
