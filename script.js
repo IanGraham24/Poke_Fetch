@@ -10,11 +10,11 @@ const team = document.getElementById("team");
 let current = null;
 
 findBtn.addEventListener("click", () => {
-  const value = input.value.toLowerCase();
-
+  const value = input.value.trim().toLowerCase();
   if (value === "") return;
 
-  const saved = localStorage.getItem(value);
+  const key = "pokemon-" + value;
+  const saved = localStorage.getItem(key);
 
   if (saved) {
     loadPokemon(JSON.parse(saved));
@@ -27,7 +27,7 @@ findBtn.addEventListener("click", () => {
       return response.json();
     })
     .then(data => {
-      localStorage.setItem(value, JSON.stringify(data));
+      localStorage.setItem(key, JSON.stringify(data));
       loadPokemon(data);
     })
     .catch(() => {
@@ -39,7 +39,10 @@ function loadPokemon(data) {
   current = data;
 
   img.src = data.sprites.front_default;
-  audio.src = data.cries.latest;
+  img.alt = data.name;
+
+  const cry = (data.cries && (data.cries.latest || data.cries.legacy)) ? (data.cries.latest || data.cries.legacy) : "";
+  audio.src = cry;
   audio.load();
 
   const moves = data.moves.map(m => m.move.name);
@@ -48,6 +51,7 @@ function loadPokemon(data) {
     select.innerHTML = "";
     moves.forEach(move => {
       const option = document.createElement("option");
+      option.value = move;
       option.textContent = move;
       select.appendChild(option);
     });
